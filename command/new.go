@@ -29,21 +29,7 @@ type Foo struct {
 //	return os.Getenv("HOME") + "/.patt.d/config.json"
 //}
 
-
-func (c *NewCommand) Run(args []string) int {
-	// Write your code here
-	name := args[0]
-	configs := patt.ReadConfig()
-	src := configs[name].Source
-	//dst := configs[name].Destination
-
-	data := Foo{
-		Year: "2017",
-		Month: "01",
-		Day: "05",
-		Week: "Thu",
-	}
-	//
+func readTemplateFile(src string, data Foo) bytes.Buffer {
 	tmpl, err := template.ParseFiles(src)
 	if err != nil {
 		fmt.Println(err)
@@ -54,12 +40,15 @@ func (c *NewCommand) Run(args []string) int {
 		fmt.Println(err)
 	}
 
+	return doc
+}
 
+func createFileFromTemplate(doc bytes.Buffer) error {
 	m := front.NewMatter()
 	m.Handle("+++", front.JSONHandler)
 	f, body, err := m.Parse(&doc)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	dst := f["destination"].(string)
@@ -68,22 +57,43 @@ func (c *NewCommand) Run(args []string) int {
 	dstDir := rep.ReplaceAllString(dst, "")
 	err = os.MkdirAll(dstDir, 0755)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
 	fp, err := os.Create(dst)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 	defer fp.Close()
 
 	writer := bufio.NewWriter(fp)
 	_, err = writer.WriteString(body)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 	writer.Flush()
+	return nil
+}
+
+func (c *NewCommand) Run(args []string) int {
+	name := args[0]
+	configs := patt.ReadConfig()
+	src := configs[name].Source
+
+	data := Foo{
+		Year: "2017",
+		Month: "01",
+		Day: "05",
+		Week: "Thu",
+	}
+
+	doc := readTemplateFile(src, data)
+
+	err := createFileFromTemplate(doc)
+	if err != nil {
+		fmt.Println(err)
+		return 1
+	}
 	return 0
 }
 
