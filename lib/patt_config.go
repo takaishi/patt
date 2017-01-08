@@ -39,12 +39,17 @@ func ReadConfig() map[string]PattConfig {
 }
 
 func WriteConfig(configs map[string]PattConfig) error {
+	err := os.Remove(configFilePath())
+	if err != nil {
+		return err
+	}
+
 	jsonBytes, err := json.MarshalIndent(configs, "", " ")
 	if err != nil {
 		return err
 	}
 
-	fp, err := os.OpenFile(configFilePath(), os.O_RDWR, 0644)
+	fp, err := os.Create(configFilePath())
 
 	if err != nil {
 		fmt.Println(err)

@@ -2,6 +2,8 @@ package command
 
 import (
 	"strings"
+	patt "github.com/takaishi/patt/lib"
+	"fmt"
 )
 
 type DeleteCommand struct {
@@ -9,7 +11,17 @@ type DeleteCommand struct {
 }
 
 func (c *DeleteCommand) Run(args []string) int {
-	// Write your code here
+	key := args[0]
+	configs := patt.ReadConfig()
+
+	delete(configs, key)
+
+	err := patt.WriteConfig(configs)
+	if err != nil {
+		fmt.Println(err)
+		return 1
+	}
+
 
 	return 0
 }
