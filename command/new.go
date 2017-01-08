@@ -19,7 +19,7 @@ type NewCommand struct {
 }
 
 
-type Foo struct {
+type Variables struct {
 	Year string
 	Month string
 	Day string
@@ -30,7 +30,7 @@ type Foo struct {
 //	return os.Getenv("HOME") + "/.patt.d/config.json"
 //}
 
-func readTemplateFile(src string, data Foo) bytes.Buffer {
+func readTemplateFile(src string, data Variables) bytes.Buffer {
 	tmpl, err := template.ParseFiles(src)
 	if err != nil {
 		fmt.Println(err)
@@ -82,7 +82,7 @@ func (c *NewCommand) Run(args []string) int {
 	src := configs[name].Source
 
 	t := time.Now()
-	data := Foo{
+	data := Variables{
 		Year: string(t.Year()),
 		Month: string(t.Month()),
 		Day: string(t.Day()),
