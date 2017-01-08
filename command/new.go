@@ -2,14 +2,11 @@ package command
 
 import (
 	"strings"
-	"io/ioutil"
 	"fmt"
 	"os"
-	//"github.com/gernest/front"
 	"text/template"
 	"bytes"
 	"bufio"
-	"encoding/json"
 	patt "github.com/takaishi/patt/lib"
 	"github.com/gernest/front"
 	"path/filepath"
