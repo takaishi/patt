@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"github.com/gernest/front"
 	"bufio"
 	"io/ioutil"
@@ -18,10 +17,7 @@ type AddCommand struct {
 
 
 func createPattDir(pattern string) error {
-	e := filepath.Ext(pattern)
-	rep := regexp.MustCompile(e + "$")
-	e = filepath.Base(rep.ReplaceAllString(pattern, ""))
-	err := os.MkdirAll(templatePath(e), 0755)
+	err := os.MkdirAll(templatePath(""), 0755)
 	if err != nil {
 		fmt.Println(err)
 		return err
