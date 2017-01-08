@@ -2,6 +2,8 @@ package command
 
 import (
 	"strings"
+	patt "github.com/takaishi/patt/lib"
+	"fmt"
 )
 
 type ListCommand struct {
@@ -9,7 +11,11 @@ type ListCommand struct {
 }
 
 func (c *ListCommand) Run(args []string) int {
-	// Write your code here
+	configs := patt.ReadConfig()
+
+	for k := range configs {
+		fmt.Printf("%s %s\n", k, configs[k].Source)
+	}
 
 	return 0
 }
