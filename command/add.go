@@ -8,7 +8,6 @@ import (
 	"regexp"
 	"github.com/gernest/front"
 	"bufio"
-	"encoding/json"
 	"io/ioutil"
 	patt "github.com/takaishi/patt/lib"
 )
@@ -126,7 +125,6 @@ func (c *AddCommand) Run(args []string) int {
 		return 1
 	}
 
-	var configs map[string]patt.PattConfig
 	if !configExists(configFilePath()) {
 		fp, err := os.Create(configFilePath())
 		if err != nil {
@@ -143,39 +141,14 @@ func (c *AddCommand) Run(args []string) int {
 		fp.Close()
 	}
 
-	fp, err := os.Open(configFilePath())
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	reader := bufio.NewReader(fp)
-	jsonBytes, err := ioutil.ReadAll(reader)
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = json.Unmarshal(jsonBytes, &configs)
-	if err != nil {
-		fmt.Println(err)
-	}
+	configs := patt.ReadConfig()
 	configs[name] = fm
 
-	jsonBytes, err = json.MarshalIndent(configs, "", " ")
+	err = patt.WriteConfig(configs)
 	if err != nil {
 		fmt.Println(err)
+		return 1
 	}
-	fp.Close()
-
-	fp, err = os.OpenFile(configFilePath(), os.O_RDWR, 0644)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-	writer := bufio.NewWriter(fp)
-	_, err = writer.Write(jsonBytes)
-	if err != nil {
-		fmt.Println(err)
-	}
-	writer.Flush()
 
 	return 0
 }

@@ -36,24 +36,7 @@ type Foo struct {
 func (c *NewCommand) Run(args []string) int {
 	// Write your code here
 	name := args[0]
-	var configs map[string]patt.PattConfig
-
-	fp, err := os.Open(configFilePath())
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	reader := bufio.NewReader(fp)
-	jsonBytes, err := ioutil.ReadAll(reader)
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = json.Unmarshal(jsonBytes, &configs)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Printf("config = \n", configs[name])
-
+	configs := patt.ReadConfig()
 	src := configs[name].Source
 	//dst := configs[name].Destination
 
@@ -92,7 +75,7 @@ func (c *NewCommand) Run(args []string) int {
 		return 1
 	}
 
-	fp, err = os.Create(dst)
+	fp, err := os.Create(dst)
 	if err != nil {
 		fmt.Println(err)
 	}
