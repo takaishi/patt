@@ -5,6 +5,46 @@
 ## Description
 
 ## Usage
+### Add template
+
+Template has front-matter thats has 'name' and 'destination'.
+
+```
+$ cat /path/to/template.md
++++
+{
+    "name": "test",
+    "destination": "/path/to/destination/{{.Year}}{{.Month}}{{.Day}}.md"
+}
++++
+# {{.Year}}-{{.Month}}-{{.Day}}({{.Week}})
+
+## Header2
+
+- foo
+- bar
+```
+
+
+```
+$ patt add /path/to/template.md
+```
+
+### Create file from template
+
+```
+$ patt new test
+```
+
+```
+$ cat  /path/to/destination/20170108.md
+# 2017-01-05(Thu)
+
+## Header2
+
+- foo
+- bar
+```
 
 ## Install
 
