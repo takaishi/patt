@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 )
 
-type PattConfig struct {
+type Config struct {
 	Source string `json:"source"`
 	Destination string `json:"destination"`
 }
@@ -17,8 +17,8 @@ func configFilePath() string {
 	return os.Getenv("HOME") + "/.patt.d/config.json"
 }
 
-func ReadConfig() map[string]PattConfig {
-	var configs map[string]PattConfig
+func ReadConfig() map[string]Config {
+	var configs map[string]Config
 
 	fp, err := os.Open(configFilePath())
 	if err != nil {
@@ -38,7 +38,7 @@ func ReadConfig() map[string]PattConfig {
 	return configs
 }
 
-func WriteConfig(configs map[string]PattConfig) error {
+func WriteConfig(configs map[string]Config) error {
 	err := os.Remove(configFilePath())
 	if err != nil {
 		return err
