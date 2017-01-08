@@ -11,6 +11,7 @@ import (
 	"github.com/gernest/front"
 	"path/filepath"
 	"regexp"
+	"time"
 )
 
 type NewCommand struct {
@@ -80,11 +81,12 @@ func (c *NewCommand) Run(args []string) int {
 	configs := patt.ReadConfig()
 	src := configs[name].Source
 
+	t := time.Now()
 	data := Foo{
-		Year: "2017",
-		Month: "01",
-		Day: "05",
-		Week: "Thu",
+		Year: string(t.Year()),
+		Month: string(t.Month()),
+		Day: string(t.Day()),
+		Week: string(t.Weekday()),
 	}
 
 	doc := readTemplateFile(src, data)
