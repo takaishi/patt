@@ -3,7 +3,8 @@ package command
 import (
 	"strings"
 	patt "github.com/takaishi/patt/lib"
-	"fmt"
+	"github.com/olekukonko/tablewriter"
+	"os"
 )
 
 type ListCommand struct {
@@ -13,10 +14,12 @@ type ListCommand struct {
 func (c *ListCommand) Run(args []string) int {
 	configs := patt.ReadConfig()
 
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Name", "Source"})
 	for k := range configs {
-		fmt.Printf("%s %s\n", k, configs[k].Source)
+		table.Append([]string{k, configs[k].Source})
 	}
-
+	       table.Render()
 	return 0
 }
 
