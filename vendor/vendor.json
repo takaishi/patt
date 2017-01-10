@@ -15,6 +15,12 @@
 			"revisionTime": "2015-03-05T20:33:00Z"
 		},
 		{
+			"checksumSHA1": "4+01HaD0/pVQLzk7nWmoJwolfrY=",
+			"path": "github.com/olekukonko/tablewriter",
+			"revision": "44e365d423f4f06769182abfeeae2b91be9d529b",
+			"revisionTime": "2016-12-29T08:21:16Z"
+		},
+		{
 			"checksumSHA1": "wcoR6MppJJfvFTshcqiiyyNzFx8=",
 			"path": "gopkg.in/yaml.v2",
 			"revision": "5d6f7e02b7cdad63b06ab3877915532cd30073b4",
