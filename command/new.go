@@ -1,16 +1,16 @@
 package command
 
 import (
-	"strings"
-	"fmt"
-	"os"
-	"text/template"
-	"bytes"
 	"bufio"
-	patt "github.com/takaishi/patt/lib"
+	"bytes"
+	"fmt"
 	"github.com/gernest/front"
+	patt "github.com/takaishi/patt/lib"
+	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
+	"text/template"
 	"time"
 )
 
@@ -18,12 +18,11 @@ type NewCommand struct {
 	Meta
 }
 
-
 type Variables struct {
-	Year string
+	Year  string
 	Month string
-	Day string
-	Week string
+	Day   string
+	Week  string
 }
 
 //func configFilePath() string {
@@ -83,10 +82,10 @@ func (c *NewCommand) Run(args []string) int {
 
 	t := time.Now()
 	data := Variables{
-		Year: string(t.Year()),
+		Year:  string(t.Year()),
 		Month: string(t.Month()),
-		Day: string(t.Day()),
-		Week: string(t.Weekday()),
+		Day:   string(t.Day()),
+		Week:  string(t.Weekday()),
 	}
 
 	doc := readTemplateFile(src, data)
