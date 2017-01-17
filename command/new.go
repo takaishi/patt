@@ -25,10 +25,6 @@ type Variables struct {
 	Week  string
 }
 
-//func configFilePath() string {
-//	return os.Getenv("HOME") + "/.patt.d/config.json"
-//}
-
 func readTemplateFile(src string, data Variables) bytes.Buffer {
 	tmpl, err := template.ParseFiles(src)
 	if err != nil {
@@ -91,7 +87,6 @@ func (c *NewCommand) Run(args []string) int {
 	name := args[0]
 	configs := patt.ReadConfig()
 	src := configs[name].Source
-
 
 	doc := readTemplateFile(src, getVariables())
 
