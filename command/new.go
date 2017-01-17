@@ -75,21 +75,25 @@ func createFileFromTemplate(doc bytes.Buffer) error {
 	return nil
 }
 
-func (c *NewCommand) Run(args []string) int {
-	name := args[0]
-	configs := patt.ReadConfig()
-	src := configs[name].Source
-
+func getVariables() (v Variables) {
 	t := time.Now()
 	wdays := []string{"日", "月", "火", "水", "木", "金", "土"}
-	data := Variables{
+	v = Variables{
 		Year:  fmt.Sprintf("%d", t.Year()),
 		Month: fmt.Sprintf("%02d", t.Month()),
 		Day:   fmt.Sprintf("%02d", t.Day()),
 		Week:  fmt.Sprintf("%s", wdays[t.Weekday()]),
 	}
+	return
+}
 
-	doc := readTemplateFile(src, data)
+func (c *NewCommand) Run(args []string) int {
+	name := args[0]
+	configs := patt.ReadConfig()
+	src := configs[name].Source
+
+
+	doc := readTemplateFile(src, getVariables())
 
 	err := createFileFromTemplate(doc)
 	if err != nil {
