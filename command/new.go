@@ -81,11 +81,12 @@ func (c *NewCommand) Run(args []string) int {
 	src := configs[name].Source
 
 	t := time.Now()
+	wdays := []string{"日", "月", "火", "水", "木", "金", "土"}
 	data := Variables{
-		Year:  string(t.Year()),
-		Month: string(t.Month()),
-		Day:   string(t.Day()),
-		Week:  string(t.Weekday()),
+		Year:  fmt.Sprintf("%d", t.Year()),
+		Month: fmt.Sprintf("%02d", t.Month()),
+		Day:   fmt.Sprintf("%02d", t.Day()),
+		Week:  fmt.Sprintf("%s", wdays[t.Weekday()]),
 	}
 
 	doc := readTemplateFile(src, data)
