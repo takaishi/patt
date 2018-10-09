@@ -1,8 +1,9 @@
 # patt
 
-
-
 ## Description
+
+* Create text file from template.
+* Manage template files.
 
 ## Usage
 ### Add template
@@ -30,6 +31,18 @@ $ cat /path/to/template.md
 $ patt add /path/to/template.md
 ```
 
+### List templates
+
+```
+$ patt list
++------+---------------------------------------------+
+| NAME |                   SOURCE                    |
++------+---------------------------------------------+
+| foo  | /Users/r_takaishi/.patt.d/templates/foo.md  |
+| test | /Users/r_takaishi/.patt.d/templates/test.md |
++------+---------------------------------------------+
+```
+
 ### Create file from template
 
 ```
@@ -44,6 +57,12 @@ $ cat  /path/to/destination/20170108.md
 
 - foo
 - bar
+```
+
+### Delete template
+
+```
+$ patt delete foo
 ```
 
 ## Install
