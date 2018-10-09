@@ -7,11 +7,6 @@ import (
 
 func Commands(meta *command.Meta) map[string]cli.CommandFactory {
 	return map[string]cli.CommandFactory{
-		"add": func() (cli.Command, error) {
-			return &command.AddCommand{
-				Meta: *meta,
-			}, nil
-		},
 		"delete": func() (cli.Command, error) {
 			return &command.DeleteCommand{
 				Meta: *meta,

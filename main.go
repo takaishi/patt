@@ -11,6 +11,12 @@ func main() {
 	app := cli.NewApp()
 	app.Commands = []cli.Command{
 		{
+			Name: "add",
+			Action: func(c *cli.Context) error {
+				return command.RunAddCommand(c)
+			},
+		},
+		{
 			Name: "list",
 			Action: func(c *cli.Context) error {
 				return command.RunListCommand(c)
