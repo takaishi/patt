@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
-	"github.com/urfave/cli"
 	"github.com/takaishi/patt/command"
+	"github.com/urfave/cli"
 	"log"
+	"os"
 )
 
 func main() {

@@ -1,15 +1,15 @@
 package command
 
 import (
-	"os"
-	"fmt"
 	"bufio"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 )
 
 type Config struct {
-	Source string `json:"source"`
+	Source      string `json:"source"`
 	Destination string `json:"destination"`
 }
 

@@ -1,9 +1,9 @@
 package command
 
 import (
+	"github.com/olekukonko/tablewriter"
 	patt "github.com/takaishi/patt/lib"
 	"github.com/urfave/cli"
-	"github.com/olekukonko/tablewriter"
 	"os"
 )
 

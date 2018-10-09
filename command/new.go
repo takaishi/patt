@@ -1,17 +1,17 @@
 package command
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"github.com/gernest/front"
 	patt "github.com/takaishi/patt/lib"
+	"github.com/urfave/cli"
 	"os"
 	"path/filepath"
 	"regexp"
 	"text/template"
 	"time"
-	"github.com/urfave/cli"
-	"bytes"
-	"bufio"
 )
 
 type Variables struct {

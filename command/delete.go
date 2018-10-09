@@ -2,8 +2,8 @@ package command
 
 import (
 	patt "github.com/takaishi/patt/lib"
-	"os"
 	"github.com/urfave/cli"
+	"os"
 )
 
 func RunDeleteCommand(c *cli.Context) error {

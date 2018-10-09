@@ -1,14 +1,14 @@
 package command
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
-	"github.com/gernest/front"
 	"bufio"
-	"io/ioutil"
+	"fmt"
+	"github.com/gernest/front"
 	patt "github.com/takaishi/patt/lib"
 	"github.com/urfave/cli"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 func createPattDir(pattern string) error {
@@ -19,7 +19,6 @@ func createPattDir(pattern string) error {
 	}
 	return nil
 }
-
 
 func writePatternFile(pattern string) error {
 	src, err := os.Open(pattern)
@@ -73,7 +72,7 @@ func readFrontMatter(pattern string) (string, patt.Config, error) {
 	defer fp.Close()
 
 	fm := patt.Config{
-		Source: templatePath(pattern),
+		Source:      templatePath(pattern),
 		Destination: dst,
 	}
 	return name, fm, nil
@@ -87,7 +86,6 @@ func configExists(filename string) bool {
 func templatePath(pattern string) string {
 	return os.Getenv("HOME") + "/.patt.d/templates/" + filepath.Base(pattern)
 }
-
 
 func configFilePath() string {
 	return os.Getenv("HOME") + "/.patt.d/config.json"
