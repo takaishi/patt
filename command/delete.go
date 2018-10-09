@@ -1,45 +1,27 @@
 package command
 
 import (
-	"strings"
 	patt "github.com/takaishi/patt/lib"
-	"fmt"
 	"os"
+	"github.com/urfave/cli"
 )
 
-type DeleteCommand struct {
-	Meta
-}
-
-func (c *DeleteCommand) Run(args []string) int {
-	key := args[0]
+func RunDeleteCommand(c *cli.Context) error {
+	key := c.Args().Get(0)
 	configs := patt.ReadConfig()
 
 	path := configs[key].Source
 	err := os.Remove(path)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
 	delete(configs, key)
 
 	err = patt.WriteConfig(configs)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
-	return 0
-}
-
-func (c *DeleteCommand) Synopsis() string {
-	return ""
-}
-
-func (c *DeleteCommand) Help() string {
-	helpText := `
-
-`
-	return strings.TrimSpace(helpText)
+	return nil
 }

@@ -28,6 +28,12 @@ func main() {
 				return command.RunNewCommand(c)
 			},
 		},
+		{
+			Name: "delete",
+			Action: func(c *cli.Context) error {
+				return command.RunDeleteCommand(c)
+			},
+		},
 	}
 
 	err := app.Run(os.Args)
