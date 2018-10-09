@@ -2,28 +2,24 @@ package command
 
 import (
 	"fmt"
-	"os"
-	"text/template"
-	"bytes"
-	"bufio"
-	patt "github.com/takaishi/patt/lib"
 	"github.com/gernest/front"
+	patt "github.com/takaishi/patt/lib"
+	"os"
 	"path/filepath"
 	"regexp"
+	"text/template"
 	"time"
 	"github.com/urfave/cli"
+	"bytes"
+	"bufio"
 )
 
 type Variables struct {
-	Year string
+	Year  string
 	Month string
-	Day string
-	Week string
+	Day   string
+	Week  string
 }
-
-//func configFilePath() string {
-//	return os.Getenv("HOME") + "/.patt.d/config.json"
-//}
 
 func readTemplateFile(src string, data Variables) bytes.Buffer {
 	tmpl, err := template.ParseFiles(src)
@@ -71,20 +67,24 @@ func createFileFromTemplate(doc bytes.Buffer) error {
 	return nil
 }
 
+func getVariables() (v Variables) {
+	t := time.Now()
+	wdays := []string{"日", "月", "火", "水", "木", "金", "土"}
+	v = Variables{
+		Year:  fmt.Sprintf("%d", t.Year()),
+		Month: fmt.Sprintf("%02d", t.Month()),
+		Day:   fmt.Sprintf("%02d", t.Day()),
+		Week:  fmt.Sprintf("%s", wdays[t.Weekday()]),
+	}
+	return
+}
+
 func RunNewCommand(c *cli.Context) error {
 	name := c.Args().Get(0)
 	configs := patt.ReadConfig()
 	src := configs[name].Source
 
-	t := time.Now()
-	data := Variables{
-		Year: string(t.Year()),
-		Month: string(t.Month()),
-		Day: string(t.Day()),
-		Week: string(t.Weekday()),
-	}
-
-	doc := readTemplateFile(src, data)
+	doc := readTemplateFile(src, getVariables())
 
 	err := createFileFromTemplate(doc)
 	if err != nil {
