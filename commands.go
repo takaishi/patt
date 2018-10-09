@@ -12,11 +12,6 @@ func Commands(meta *command.Meta) map[string]cli.CommandFactory {
 				Meta: *meta,
 			}, nil
 		},
-		"list": func() (cli.Command, error) {
-			return &command.ListCommand{
-				Meta: *meta,
-			}, nil
-		},
 		"delete": func() (cli.Command, error) {
 			return &command.DeleteCommand{
 				Meta: *meta,
