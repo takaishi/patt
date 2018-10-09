@@ -10,6 +10,11 @@ default: build
 depsdev: ## Installing dependencies for development
 	go get github.com/golang/lint/golint
 
+test: ## Run test
+	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Testing$(RESET)"
+	go test -v $(TEST) -timeout=30s -parallel=4
+	go test -race $(TEST)
+
 lint: ## Exec golint
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Linting$(RESET)"
 	golint -min_confidence 1.1 -set_exit_status $(TEST)
