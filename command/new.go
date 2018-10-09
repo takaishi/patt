@@ -1,22 +1,18 @@
 package command
 
 import (
-	"bufio"
-	"bytes"
 	"fmt"
 	"github.com/gernest/front"
 	patt "github.com/takaishi/patt/lib"
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 	"text/template"
 	"time"
+	"github.com/urfave/cli"
+	"bytes"
+	"bufio"
 )
-
-type NewCommand struct {
-	Meta
-}
 
 type Variables struct {
 	Year  string
@@ -83,8 +79,8 @@ func getVariables() (v Variables) {
 	return
 }
 
-func (c *NewCommand) Run(args []string) int {
-	name := args[0]
+func RunNewCommand(c *cli.Context) error {
+	name := c.Args().Get(0)
 	configs := patt.ReadConfig()
 	src := configs[name].Source
 
@@ -92,19 +88,7 @@ func (c *NewCommand) Run(args []string) int {
 
 	err := createFileFromTemplate(doc)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
-	return 0
-}
-
-func (c *NewCommand) Synopsis() string {
-	return ""
-}
-
-func (c *NewCommand) Help() string {
-	helpText := `
-
-`
-	return strings.TrimSpace(helpText)
+	return nil
 }

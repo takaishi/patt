@@ -1,7 +1,6 @@
 package command
 
 import (
-	"strings"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,12 +8,8 @@ import (
 	"bufio"
 	"io/ioutil"
 	patt "github.com/takaishi/patt/lib"
+	"github.com/urfave/cli"
 )
-
-type AddCommand struct {
-	Meta
-}
-
 
 func createPattDir(pattern string) error {
 	err := os.MkdirAll(templatePath(""), 0755)
@@ -98,27 +93,24 @@ func configFilePath() string {
 	return os.Getenv("HOME") + "/.patt.d/config.json"
 }
 
-func (c *AddCommand) Run(args []string) int {
+func RunAddCommand(c *cli.Context) error {
 	// Write your code here
-	pattern := args[0]
+	pattern := c.Args().Get(0)
 	fmt.Printf("pattern = %v\n", pattern)
 
 	err := createPattDir(pattern)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
 	err = writePatternFile(pattern)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
 	name, fm, err := readFrontMatter(pattern)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
 	if !configExists(configFilePath()) {
@@ -142,20 +134,8 @@ func (c *AddCommand) Run(args []string) int {
 
 	err = patt.WriteConfig(configs)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
 
-	return 0
-}
-
-func (c *AddCommand) Synopsis() string {
-	return ""
-}
-
-func (c *AddCommand) Help() string {
-	helpText := `
-
-`
-	return strings.TrimSpace(helpText)
+	return nil
 }
