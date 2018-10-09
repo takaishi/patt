@@ -1,7 +1,6 @@
 package command
 
 import (
-	"strings"
 	"fmt"
 	"os"
 	"text/template"
@@ -12,12 +11,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"time"
+	"github.com/urfave/cli"
 )
-
-type NewCommand struct {
-	Meta
-}
-
 
 type Variables struct {
 	Year string
@@ -76,8 +71,8 @@ func createFileFromTemplate(doc bytes.Buffer) error {
 	return nil
 }
 
-func (c *NewCommand) Run(args []string) int {
-	name := args[0]
+func RunNewCommand(c *cli.Context) error {
+	name := c.Args().Get(0)
 	configs := patt.ReadConfig()
 	src := configs[name].Source
 
@@ -93,19 +88,7 @@ func (c *NewCommand) Run(args []string) int {
 
 	err := createFileFromTemplate(doc)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		return err
 	}
-	return 0
-}
-
-func (c *NewCommand) Synopsis() string {
-	return ""
-}
-
-func (c *NewCommand) Help() string {
-	helpText := `
-
-`
-	return strings.TrimSpace(helpText)
+	return nil
 }

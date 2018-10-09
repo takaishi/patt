@@ -22,6 +22,12 @@ func main() {
 				return command.RunListCommand(c)
 			},
 		},
+		{
+			Name: "new",
+			Action: func(c *cli.Context) error {
+				return command.RunNewCommand(c)
+			},
+		},
 	}
 
 	err := app.Run(os.Args)
