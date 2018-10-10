@@ -1,27 +1,29 @@
 package command
 
 import (
-	patt "github.com/takaishi/patt/lib"
+	"errors"
+	"github.com/takaishi/patt/template"
 	"github.com/urfave/cli"
 	"os"
 )
 
 func RunDeleteCommand(c *cli.Context) error {
-	key := c.Args().Get(0)
-	configs := patt.ReadConfig()
+	name := c.Args().Get(0)
 
-	path := configs[key].Source
-	err := os.Remove(path)
+	templates, err := template.ReadTemplates()
 	if err != nil {
 		return err
 	}
 
-	delete(configs, key)
-
-	err = patt.WriteConfig(configs)
-	if err != nil {
-		return err
+	for _, tmpl := range templates {
+		if tmpl.Name == name {
+			err := os.Remove(tmpl.Source)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
 	}
 
-	return nil
+	return errors.New("Cound not find template " + name)
 }

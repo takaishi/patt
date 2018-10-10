@@ -3,37 +3,14 @@ package command
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"github.com/gernest/front"
-	patt "github.com/takaishi/patt/lib"
+	"github.com/pkg/errors"
+	"github.com/takaishi/patt/template"
 	"github.com/urfave/cli"
 	"os"
 	"path/filepath"
 	"regexp"
-	"text/template"
-	"time"
 )
-
-type Variables struct {
-	Year  string
-	Month string
-	Day   string
-	Week  string
-}
-
-func readTemplateFile(src string, data Variables) bytes.Buffer {
-	tmpl, err := template.ParseFiles(src)
-	if err != nil {
-		fmt.Println(err)
-	}
-	var doc bytes.Buffer
-	err = tmpl.Execute(&doc, data)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return doc
-}
 
 func createFileFromTemplate(doc bytes.Buffer) error {
 	m := front.NewMatter()
@@ -67,28 +44,23 @@ func createFileFromTemplate(doc bytes.Buffer) error {
 	return nil
 }
 
-func getVariables() (v Variables) {
-	t := time.Now()
-	wdays := []string{"日", "月", "火", "水", "木", "金", "土"}
-	v = Variables{
-		Year:  fmt.Sprintf("%d", t.Year()),
-		Month: fmt.Sprintf("%02d", t.Month()),
-		Day:   fmt.Sprintf("%02d", t.Day()),
-		Week:  fmt.Sprintf("%s", wdays[t.Weekday()]),
-	}
-	return
-}
-
 func RunNewCommand(c *cli.Context) error {
 	name := c.Args().Get(0)
-	configs := patt.ReadConfig()
-	src := configs[name].Source
 
-	doc := readTemplateFile(src, getVariables())
-
-	err := createFileFromTemplate(doc)
+	templates, err := template.ReadTemplates()
 	if err != nil {
 		return err
 	}
-	return nil
+
+	for _, tmpl := range templates {
+		if tmpl.Name == name {
+			doc := template.ReadTemplateFile(tmpl.Source, template.GetVariables())
+			err := createFileFromTemplate(doc)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+	}
+	return errors.New("Cound not find template " + name)
 }
