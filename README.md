@@ -67,7 +67,13 @@ $ patt delete foo
 
 ## Install
 
-To install, use `go get`:
+Use Homebrew:
+
+```
+$ brew install takaishi/fomulas/patt
+```
+
+Use `go get`:
 
 ```bash
 $ go get -d github.com/takaishi/patt
