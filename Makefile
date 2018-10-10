@@ -30,7 +30,7 @@ dist: clean
 	goxz -pv=$(VERSION) -os=darwin,linux -arch=amd64 -d=dist -build-ldflags "-X github.com/takaishi/patt/config.Version=$(VERSION)" .
 
 github_release: ## Create some distribution packages
-	ghr -u takaishi -r patt --replace v$(VERSION) builds/
+	ghr -u takaishi -r patt --replace v$(VERSION) dist/
 
 clean:
 	rm -rf tmp
