@@ -17,24 +17,28 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name: "add",
+			Usage: "Addd new template",
 			Action: func(c *cli.Context) error {
 				return command.RunAddCommand(c)
 			},
 		},
 		{
 			Name: "list",
+			Usage: "Show templates",
 			Action: func(c *cli.Context) error {
 				return command.RunListCommand(c)
 			},
 		},
 		{
 			Name: "new",
+			Usage: "Generate file from template",
 			Action: func(c *cli.Context) error {
 				return command.RunNewCommand(c)
 			},
 		},
 		{
 			Name: "delete",
+			Usage: "Delete template",
 			Action: func(c *cli.Context) error {
 				return command.RunDeleteCommand(c)
 			},
