@@ -33,6 +33,5 @@ github_release: ## Create some distribution packages
 	ghr -u takaishi -r patt --replace v$(VERSION) builds/
 
 clean:
-	rm patt
 	rm -rf tmp
 	rm -rf dist
