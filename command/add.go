@@ -78,17 +78,8 @@ func readFrontMatter(pattern string) (string, patt.Config, error) {
 	return name, fm, nil
 }
 
-func configExists(filename string) bool {
-	_, err := os.Stat(filename)
-	return err == nil
-}
-
 func templatePath(pattern string) string {
 	return os.Getenv("HOME") + "/.patt.d/templates/" + filepath.Base(pattern)
-}
-
-func configFilePath() string {
-	return os.Getenv("HOME") + "/.patt.d/config.json"
 }
 
 func RunAddCommand(c *cli.Context) error {
@@ -102,35 +93,6 @@ func RunAddCommand(c *cli.Context) error {
 	}
 
 	err = writePatternFile(pattern)
-	if err != nil {
-		return err
-	}
-
-	name, fm, err := readFrontMatter(pattern)
-	if err != nil {
-		return err
-	}
-
-	if !configExists(configFilePath()) {
-		fp, err := os.Create(configFilePath())
-		if err != nil {
-			fmt.Println(err)
-		}
-		writer := bufio.NewWriter(fp)
-		_, err = writer.WriteString("{}")
-		if err != nil {
-			fmt.Println(err)
-
-		}
-		writer.Flush()
-
-		fp.Close()
-	}
-
-	configs := patt.ReadConfig()
-	configs[name] = fm
-
-	err = patt.WriteConfig(configs)
 	if err != nil {
 		return err
 	}
