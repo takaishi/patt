@@ -1,4 +1,5 @@
 TEST ?= $(shell go list ./... | grep -v -e vendor -e keys -e tmp)
+VERSION = $(shell cat version)
 BUILD=tmp/bin
 
 INFO_COLOR=\033[1;34m
@@ -9,6 +10,9 @@ default: build
 
 depsdev: ## Installing dependencies for development
 	go get github.com/golang/lint/golint
+	go get -u github.com/tcnksm/ghr
+	go get -u github.com/Songmu/goxz/cmd/goxz
+
 
 test: ## Run test
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Testing$(RESET)"
@@ -20,4 +24,15 @@ lint: ## Exec golint
 	golint -min_confidence 1.1 -set_exit_status $(TEST)
 
 build:
-	go build -o $(BUILD)/patt
+	go build  -ldflags "-X github.com/takaishi/patt/config.Version=$(VERSION)" -o $(BUILD)/patt
+
+dist: clean
+	goxz -pv=$(VERSION) -os=darwin,linux -arch=amd64 -d=dist -build-ldflags "-X github.com/takaishi/patt/config.Version=$(VERSION)" .
+
+github_release: ## Create some distribution packages
+	ghr -u takaishi -r patt --replace v$(VERSION) builds/
+
+clean:
+	rm patt
+	rm -rf tmp
+	rm -rf dist

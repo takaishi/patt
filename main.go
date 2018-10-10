@@ -2,13 +2,18 @@ package main
 
 import (
 	"github.com/takaishi/patt/command"
+	"github.com/takaishi/patt/config"
 	"github.com/urfave/cli"
 	"log"
 	"os"
 )
 
+var version string
+
 func main() {
 	app := cli.NewApp()
+	app.Version = config.Version
+
 	app.Commands = []cli.Command{
 		{
 			Name: "add",
