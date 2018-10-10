@@ -3,8 +3,6 @@ package command
 import (
 	"bufio"
 	"fmt"
-	"github.com/gernest/front"
-	patt "github.com/takaishi/patt/lib"
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"os"
@@ -48,34 +46,6 @@ func writePatternFile(pattern string) error {
 
 	return nil
 
-}
-
-func readFrontMatter(pattern string) (string, patt.Config, error) {
-	fp, err := os.Open(pattern)
-	if err != nil {
-		fmt.Println(err)
-		return "", patt.Config{}, err
-	}
-	defer fp.Close()
-
-	reader := bufio.NewReader(fp)
-	m := front.NewMatter()
-	m.Handle("+++", front.JSONHandler)
-	f, _, err := m.Parse(reader)
-	if err != nil {
-		fmt.Println(err)
-		return "", patt.Config{}, err
-	}
-
-	dst := f["destination"].(string)
-	name := f["name"].(string)
-	defer fp.Close()
-
-	fm := patt.Config{
-		Source:      templatePath(pattern),
-		Destination: dst,
-	}
-	return name, fm, nil
 }
 
 func templatePath(pattern string) string {
